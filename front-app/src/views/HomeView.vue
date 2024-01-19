@@ -26,6 +26,7 @@
           :onClick="handleButtonClick"
           :buttonType="buttonType"
         />
+        <CustomLoader :isLoading="loading" />
       </div>
     </div>
   </div>
@@ -34,6 +35,8 @@
 <script lang="ts">
 import { computed, defineComponent, Ref, ref } from "vue";
 import ImageUpload from "@/components/ImageUpload.vue";
+import CustomLoader from "@/components/CustomLoader.vue";
+
 import StyledButton from "@/components/StyledButon.vue";
 import CustomAlert from "@/components/CustomAlert.vue";
 import { BarChart, useBarChart } from "vue-chart-3";
@@ -45,6 +48,7 @@ export default defineComponent({
   name: "HomeView",
   components: {
     BarChart,
+    CustomLoader,
     ImageUpload,
     StyledButton,
     CustomAlert,
@@ -58,6 +62,7 @@ export default defineComponent({
     const file: Ref<File | null> = ref(null);
 
     const showWarn = ref(false);
+    const loading = ref(false);
     const showErrorMsg = ref(false);
     const erroMsg = ref("");
 
@@ -158,13 +163,18 @@ export default defineComponent({
     };
 
     const handleButtonClick = async () => {
-      console.log(file);
+      console.log("handleButtonClick is called!");
+
       if (file?.value) {
         showWarn.value = false;
+        loading.value = true;
 
-        console.log("Button clicked!");
         const result = await fetchData();
         const json = await result.json();
+
+        setTimeout(() => {
+          loading.value = false;
+        }, 800);
 
         if (!result.ok) {
           showErrorMsg.value = true;
@@ -191,6 +201,7 @@ export default defineComponent({
       dataMonthlyRateRevenue,
       showErrorMsg,
       erroMsg,
+      loading,
       optionsChurnRate,
       optionsMRR,
       shouldShowChart,
