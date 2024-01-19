@@ -37,7 +37,16 @@ export class CsvController {
 
     if (file.mimetype.includes('csv')) {
       const csvData = await this.readCsv(file.buffer);
-      return this.metricsService.calculateMRRMonthly(csvData);
+      const monthRateRevenue =
+        await this.metricsService.calculateMRRMonthly(csvData);
+      const churnRate = this.metricsService.calculateChurnRate(
+        csvData,
+        monthRateRevenue,
+      );
+      return {
+        monthRateRevenue,
+        churnRate,
+      };
     } else if (
       file.mimetype.includes(
         'vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -45,7 +54,16 @@ export class CsvController {
     ) {
       if (this.hasXlsExtension(file.originalname)) {
         const excelData = await this.readExcel(file.buffer);
-        return this.metricsService.calculateMRRMonthly(excelData);
+        const monthRateRevenue =
+          await this.metricsService.calculateMRRMonthly(excelData);
+        const churnRate = this.metricsService.calculateChurnRate(
+          excelData,
+          monthRateRevenue,
+        );
+        return {
+          monthRateRevenue,
+          churnRate,
+        };
       } else {
         throw new BadRequestException('Formato de arquivo inválido');
       }

@@ -4,10 +4,10 @@ import { SubscriptionDTO } from 'src/dtos/subscription';
 
 @Injectable()
 export class MetricsService {
+  hasNaN = (str: string) => str.includes('NaN-NaN');
+
   async calculateMRRMonthly(data: SubscriptionDTO[]) {
     const mrrPorMes: { [key: string]: number } = {};
-
-    const hasNaN = (str: string) => str.includes('NaN');
 
     data.forEach((row: SubscriptionDTO) => {
       const dataInicio = row.dataInicio;
@@ -24,7 +24,7 @@ export class MetricsService {
           (mrrPorMes[mesAnoCancelamento] || 0) + valor,
         ).toFixed(2);
 
-        if (!hasNaN(mesAnoCancelamento)) {
+        if (!this.hasNaN(mesAnoCancelamento)) {
           mrrPorMes[mesAnoCancelamento] = parseFloat(roundedValor);
         }
       } else {
@@ -35,7 +35,7 @@ export class MetricsService {
           (mrrPorMes[mesAno] || 0) + valor,
         ).toFixed(2);
 
-        if (!hasNaN(mesAno)) {
+        if (!this.hasNaN(mesAno)) {
           mrrPorMes[mesAno] = parseFloat(roundedValor);
         }
       }
@@ -55,5 +55,53 @@ export class MetricsService {
     );
 
     return sortedMRR;
+  }
+
+  calculateChurnRate(
+    data: SubscriptionDTO[],
+    mrrPorMes: { [key: string]: number },
+  ) {
+    const churnRatePorMes: { [key: string]: any } = {};
+
+    data.forEach((row: SubscriptionDTO) => {
+      const dataCancelamento = row.dataCancelamento;
+      if (dataCancelamento) {
+        const mesAnoCancelamento = `${getYear(new Date(dataCancelamento))}-${
+          getMonth(new Date(dataCancelamento)) + 1
+        }`;
+
+        if (!this.hasNaN(mesAnoCancelamento)) {
+          const value = (churnRatePorMes[mesAnoCancelamento] || 0) + 1;
+
+          if (value) {
+            churnRatePorMes[mesAnoCancelamento] = value;
+          }
+        }
+      }
+    });
+
+    const churnRate = Object.fromEntries(
+      Object.entries(churnRatePorMes).sort(([a], [b]) => {
+        const [yearA, monthA] = a.split('-').map(Number);
+        const [yearB, monthB] = b.split('-').map(Number);
+
+        if (yearA !== yearB) {
+          return yearA - yearB;
+        }
+
+        return monthA - monthB;
+      }),
+    );
+    // Calcula o churn rate mensal
+    for (const mesAno in churnRate) {
+      const totalAssinaturasAtivas = mrrPorMes[mesAno];
+      const cancelamentos = churnRate[mesAno];
+      const rate = (cancelamentos / totalAssinaturasAtivas) * 100;
+      if (rate) {
+        churnRate[mesAno] = parseFloat(rate.toFixed(2));
+      }
+    }
+
+    return churnRate;
   }
 }

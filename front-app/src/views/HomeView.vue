@@ -3,7 +3,10 @@
     <div class="content-wrapper">
       <div class="charts" v-if="shouldShowChart">
         <div style="width: 700px">
-          <BarChart v-bind="barChartProps" />
+          <BarChart v-bind="barChartPropsMRR" />
+        </div>
+        <div style="width: 400px; margin-left: 3rem">
+          <BarChart v-bind="barChartPropsChurnRate" />
         </div>
       </div>
 
@@ -58,17 +61,19 @@ export default defineComponent({
     const showErrorMsg = ref(false);
     const erroMsg = ref("");
 
-    const dataValues = ref([]);
-    const dataLabels = ref([]);
-    const toggleLegend = ref(true);
+    const dataValuesMRR = ref([]);
+    const dataLabelsMRR = ref([]);
 
-    const shouldShowChart = computed(() => dataValues.value.length > 0);
+    const dataValuesChurnRate = ref([]);
+    const dataLabelsChurnRate = ref([]);
 
-    const testData = computed<ChartData<"bar">>(() => ({
-      labels: dataLabels.value,
+    const shouldShowChart = computed(() => dataValuesMRR.value.length > 0);
+
+    const dataMonthlyRateRevenue = computed<ChartData<"bar">>(() => ({
+      labels: dataLabelsMRR.value,
       datasets: [
         {
-          data: dataValues.value,
+          data: dataValuesMRR.value,
           backgroundColor: [
             "#77CEFF",
             "#0079AF",
@@ -80,7 +85,23 @@ export default defineComponent({
       ],
     }));
 
-    const options = computed<ChartOptions<"bar">>(() => ({
+    const dataChurnRate = computed<ChartData<"bar">>(() => ({
+      labels: dataLabelsChurnRate.value,
+      datasets: [
+        {
+          data: dataValuesChurnRate.value,
+          backgroundColor: [
+            "#77CEFF",
+            "#0079AF",
+            "#123E6B",
+            "#97B0C4",
+            "#A5C8ED",
+          ],
+        },
+      ],
+    }));
+
+    const optionsMRR = computed<ChartOptions<"bar">>(() => ({
       responsive: true,
       maintainAspectRatio: true,
       plugins: {
@@ -94,14 +115,33 @@ export default defineComponent({
       },
     }));
 
-    const { barChartProps, barChartRef } = useBarChart({
-      chartData: testData as any,
-      options,
-    });
+    const optionsChurnRate = computed<ChartOptions<"bar">>(() => ({
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: "Grafico de Métrica de Churn Rate",
+        },
+      },
+    }));
 
-    function switchLegend() {
-      toggleLegend.value = !toggleLegend.value;
-    }
+    const { barChartProps: barChartPropsMRR, barChartRef: barChartRefMRR } =
+      useBarChart({
+        chartData: dataMonthlyRateRevenue as any,
+        options: optionsMRR,
+      });
+
+    const {
+      barChartProps: barChartPropsChurnRate,
+      barChartRef: barChartRefChurnRate,
+    } = useBarChart({
+      chartData: dataChurnRate as any,
+      options: optionsChurnRate,
+    });
 
     async function fetchData() {
       const formData = new FormData();
@@ -133,8 +173,11 @@ export default defineComponent({
         }
         showErrorMsg.value = false;
         erroMsg.value = "";
-        dataLabels.value = Object.keys(json) as never[];
-        dataValues.value = Object.values(json) as never[];
+        dataLabelsMRR.value = Object.keys(json.monthRateRevenue) as never[];
+        dataValuesMRR.value = Object.values(json.monthRateRevenue) as never[];
+
+        dataLabelsChurnRate.value = Object.keys(json.churnRate) as never[];
+        dataValuesChurnRate.value = Object.values(json.churnRate) as never[];
       } else {
         showWarn.value = true;
       }
@@ -145,14 +188,16 @@ export default defineComponent({
       showWarn,
       handleFileUploaded,
       handleButtonClick,
-      switchLegend,
-      testData,
+      dataMonthlyRateRevenue,
       showErrorMsg,
       erroMsg,
-      options,
+      optionsChurnRate,
+      optionsMRR,
       shouldShowChart,
-      barChartRef,
-      barChartProps,
+      barChartPropsMRR,
+      barChartRefMRR,
+      barChartPropsChurnRate,
+      barChartRefChurnRate,
     };
   },
 });
@@ -175,6 +220,6 @@ export default defineComponent({
   color: #333;
 }
 .charts {
-  margin-top: 2rem;
+  display: flex;
 }
 </style>
