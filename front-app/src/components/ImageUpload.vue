@@ -8,24 +8,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "ImageUpload",
   setup(_, { emit }) {
-    // Referência para o estado da imagem
-    const imageUrl = ref("");
-
     // Manipulador de evento para a mudança de arquivo
     const handleFileChange = (event: any) => {
       const file = event.target.files[0];
       if (file) {
-        emit("fileUploaded", file.name);
+        emit("fileUploaded", file);
       }
     };
 
     return {
-      imageUrl,
       handleFileChange,
     };
   },

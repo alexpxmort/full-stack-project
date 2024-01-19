@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch } from "vue";
+import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
   name: "CustomAlert",
@@ -31,6 +31,8 @@ export default defineComponent({
 .custom-alert {
   padding: 10px;
   max-width: 300px;
+  margin: auto;
+  display: block;
   font-size: 16px;
   border-radius: 5px;
   margin-top: 10px;

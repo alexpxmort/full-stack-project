@@ -30,7 +30,6 @@ export default defineComponent({
 <style scoped lang="scss">
 .custom-button {
   padding: 10px 20px;
-  margin-top: 5rem;
   font-size: 16px;
   cursor: pointer;
   background-color: #42b983;
