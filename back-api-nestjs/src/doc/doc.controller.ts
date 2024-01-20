@@ -16,11 +16,11 @@ import { format, subDays } from 'date-fns';
 import { MetricsService } from 'src/metrics/metrics.service';
 import { SubscriptionDTO } from 'src/dtos/subscription';
 
-@Controller('csv')
-@ApiTags('csv')
-export class CsvController {
+@Controller('doc')
+@ApiTags('doc')
+export class DocController {
   constructor(private metricsService: MetricsService) {}
-  @Post('upload-csv')
+  @Post('upload-doc')
   @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -30,7 +30,7 @@ export class CsvController {
   @HttpCode(200)
   @ApiResponse({ status: 400, description: 'Formato de arquivo invalido' })
   @ApiResponse({ status: 200, description: 'Retorna os dados das metricas' })
-  async uploadCsv(@UploadedFile() file: Express.Multer.File) {
+  async uploadDoc(@UploadedFile() file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException('Nenhum arquivo enviado');
     }

@@ -151,7 +151,7 @@ export default defineComponent({
     async function fetchData() {
       const formData = new FormData();
       formData.append(`file`, file.value as any);
-      return await fetch(`http://localhost:3000/csv/upload-csv`, {
+      return await fetch(`http://localhost:3000/doc/upload-doc`, {
         method: "POST",
         body: formData,
       });
