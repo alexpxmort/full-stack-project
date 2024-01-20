@@ -41,7 +41,7 @@ import StyledButton from "@/components/StyledButon.vue";
 import CustomAlert from "@/components/CustomAlert.vue";
 import { BarChart, useBarChart } from "vue-chart-3";
 import { Chart, ChartData, ChartOptions, registerables } from "chart.js";
-
+import { BASE_URL_API } from "../helper";
 Chart.register(...registerables);
 
 export default defineComponent({
@@ -151,7 +151,7 @@ export default defineComponent({
     async function fetchData() {
       const formData = new FormData();
       formData.append(`file`, file.value as any);
-      return await fetch(`http://localhost:3000/doc/upload-doc`, {
+      return await fetch(`${BASE_URL_API}doc/upload-doc`, {
         method: "POST",
         body: formData,
       });
