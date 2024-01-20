@@ -1,0 +1,10 @@
+node_modules
+back-api-nestjs/node_modules
+back-api-nestjs/dist
+back-api-nestjs/test
+front-app/node_modules
+front-app/tests
+front-app/dist
+modelo-teste-full-stack.xlsx
+modelo-teste-full-stack.xlsx - Sheet1.csv
+Readme.md

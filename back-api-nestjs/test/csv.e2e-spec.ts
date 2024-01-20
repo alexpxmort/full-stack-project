@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { AppModule } from '../src/app.module';
 
-describe('CsvController (e2e)', () => {
+describe('DocController (e2e)', () => {
   let app: INestApplication;
   const BASE_URL = '/doc/upload-doc';
 
