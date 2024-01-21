@@ -115,7 +115,7 @@ export default defineComponent({
         },
         title: {
           display: true,
-          text: "Grafico de Métrica de MRR",
+          text: "Grafico de Taxa de Receita Mensal",
         },
       },
     }));
@@ -129,7 +129,7 @@ export default defineComponent({
         },
         title: {
           display: true,
-          text: "Grafico de Métrica de Churn Rate",
+          text: "Grafico de Taxa de Cancelamento Mensal ",
         },
       },
     }));
