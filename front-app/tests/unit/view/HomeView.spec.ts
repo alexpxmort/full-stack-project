@@ -12,7 +12,6 @@ describe("HomeView.vue", () => {
   let wrapper: VueWrapper<any>;
 
   beforeAll(() => {
-    // Mocking the fetch function
     globalThis.fetch = jest.fn(() =>
       Promise.resolve({
         ok: true,
@@ -33,7 +32,6 @@ describe("HomeView.vue", () => {
     expect(wrapper.exists()).toBe(true);
   });
   it("should handle file upload and fetch data", async () => {
-    // Mock a File object
     const file = new File(["file content"], "example.csv", {
       type: "text/csv",
     });
@@ -52,12 +50,6 @@ describe("HomeView.vue", () => {
 
     await wrapper.vm.$nextTick();
 
-    // Console logs for debugging
-    console.log("showWarn:", wrapper.vm.showWarn);
-    console.log(
-      "CustomAlert exists:",
-      wrapper.findComponent({ name: "CustomAlert" }).exists()
-    );
     expect(wrapper.findComponent({ name: "CustomAlert" }).exists()).toBe(true);
   });
 });

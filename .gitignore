@@ -1,4 +1,7 @@
 .DS_Store
 /back-api-nestjs/node_modules
+/back-api-nestjs/dist
 /front-app/node_modules
+/front-app/dist
+
 

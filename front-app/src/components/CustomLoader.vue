@@ -35,7 +35,7 @@ export default defineComponent({
 
 .loader {
   border: 6px solid #f3f3f3;
-  border-top: 6px solid #4caf50; /* Cor verde mais intensa */
+  border-top: 6px solid #4caf50;
   border-radius: 50%;
   width: 50px;
   height: 50px;

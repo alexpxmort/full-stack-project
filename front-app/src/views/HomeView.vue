@@ -163,8 +163,6 @@ export default defineComponent({
     };
 
     const handleButtonClick = async () => {
-      console.log("handleButtonClick is called!");
-
       if (file?.value) {
         showWarn.value = false;
         loading.value = true;
@@ -219,11 +217,11 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Defina a altura desejada ou utilize flex-grow para preencher a altura */
+  height: 100vh;
 }
 
 .content-wrapper {
-  text-align: center; /* Opcional, centraliza o conteúdo horizontalmente */
+  text-align: center;
 }
 
 .file-name {

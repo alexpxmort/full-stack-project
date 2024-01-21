@@ -26,7 +26,6 @@ describe("StyledButton", () => {
       },
     });
 
-    // Ensure the custom text is rendered
     expect(wrapper.text()).toContain("Custom Text");
   });
 });
